@@ -53,7 +53,7 @@ double v_dot_p3(const double x[3], const double y[3])
     return res;
 }
 
-void m_v_m3(const double mat[3][3], const double vec[3], double *result)
+void m_v_m3(double mat[3][3], const double vec[3], double *result)
 { 
     int i;
     for (i=0;i<3;i++) result[i] = v_dot_p3(mat[i], vec);
@@ -66,7 +66,7 @@ double v_dot_p4(const double x[4], const double y[4])
     return res;
 }
 
-void m_v_m4(const double mat[4][4], const double vec[4], double *result)
+void m_v_m4(double mat[4][4], const double vec[4], double *result)
 { 
     int i;
     for (i=0;i<4;i++) result[i] = v_dot_p4(mat[i], vec);
@@ -79,7 +79,7 @@ double v_dot_p5(const double x[5], const double y[5])
     return res;
 }
 
-void m_v_m5(const double mat[5][5], const double vec[5], double *result)
+void m_v_m5(double mat[5][5], const double vec[5], double *result)
 { 
     int i;
     for (i=0;i<5;i++) result[i] = v_dot_p5(mat[i], vec);
@@ -92,7 +92,7 @@ double v_dot_p6(const double x[6], const double y[6])
     return res;
 }
 
-void m_v_m6(const double mat[6][6], const double vec[6], double *result)
+void m_v_m6(double mat[6][6], const double vec[6], double *result)
 { 
     int i;
     for (i=0;i<6;i++) result[i] = v_dot_p6(mat[i], vec);

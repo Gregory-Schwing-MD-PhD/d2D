@@ -1,4 +1,4 @@
-/* d2D - v. 2.0.0
+/* d2D - v. 2.1.0
  * (c) Carlo Camilloni
  * Camilloni C., De Simone A., Vranken W., and Vendruscolo M.
  * Determination of Secondary Structure Populations in Disordered States of Proteins using NMR Chemical Shifts
@@ -21,8 +21,8 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
   {
     if(pp[i][0]!=0.||pp[i][1]!=0.||pp[i][2]!=0.) 
     {
-      if(star[i]<3) {
-        if(((i>0)&&(i<sql-1))&&star[i-1]>2&&star[i+1]>2&&
+      if(star[i]<4) {
+        if(((i>0)&&(i<sql-1))&&star[i-1]>2&&star[i+1]>3&&
            (pp[i-1][0]!=0.||pp[i-1][1]!=0.||pp[i-1][2]!=0.)&&
            (pp[i+1][0]!=0.||pp[i+1][1]!=0.||pp[i+1][2]!=0.)){
           spp[i][0] = (pp[i+1][0]+pp[i-1][0])/2.;
@@ -45,7 +45,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
         spp[i][3] = pp[i][3];
         dcount=1.0;
 
-        if(i>2) if(nseq[i-1]!=Z&&nseq[i-2]!=Z&&(pp[i-2][0]!=0.||pp[i-2][1]!=0.||pp[i-2][2]!=0.)&&star[i-2]>2) {
+        if(i>2) if(nseq[i-1]!=Z&&nseq[i-2]!=Z&&(pp[i-2][0]!=0.||pp[i-2][1]!=0.||pp[i-2][2]!=0.)&&star[i-2]>3) {
           spp[i][0] += wc[4][0]*pp[i-2][0];
           spp[i][1] += wc[4][0]*pp[i-2][1];
           spp[i][2] += wc[4][0]*pp[i-2][2];
@@ -53,7 +53,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
           dcount+=wc[4][0];
         }
 
-        if(i>1) if(nseq[i-1]!=Z&&(pp[i-1][0]!=0.||pp[i-1][1]!=0.||pp[i-1][2]!=0.)&&star[i-1]>2) {
+        if(i>1) if(nseq[i-1]!=Z&&(pp[i-1][0]!=0.||pp[i-1][1]!=0.||pp[i-1][2]!=0.)&&star[i-1]>3) {
           spp[i][0] += wc[4][1]*pp[i-1][0];
           spp[i][1] += wc[4][1]*pp[i-1][1];
           spp[i][2] += wc[4][1]*pp[i-1][2];
@@ -61,7 +61,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
           dcount+=wc[4][1];
         }
 
-        if(i<sql-2) if(nseq[i+1]!=Z&&(pp[i+1][0]!=0.||pp[i+1][1]!=0.||pp[i+1][2]!=0.)&&star[i+1]>2) {
+        if(i<sql-2) if(nseq[i+1]!=Z&&(pp[i+1][0]!=0.||pp[i+1][1]!=0.||pp[i+1][2]!=0.)&&star[i+1]>3) {
           spp[i][0] += wc[4][1]*pp[i+1][0];
           spp[i][1] += wc[4][1]*pp[i+1][1];
           spp[i][2] += wc[4][1]*pp[i+1][2];
@@ -69,7 +69,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
           dcount+=wc[4][1];
         }
 
-        if(i<sql-3) if(nseq[i+1]!=Z&&nseq[i+2]!=Z&&(pp[i+2][0]!=0.||pp[i+2][1]!=0.||pp[i+2][2]!=0.)&&star[i+2]>2) {
+        if(i<sql-3) if(nseq[i+1]!=Z&&nseq[i+2]!=Z&&(pp[i+2][0]!=0.||pp[i+2][1]!=0.||pp[i+2][2]!=0.)&&star[i+2]>3) {
           spp[i][0] += wc[4][0]*pp[i+2][0];
           spp[i][1] += wc[4][0]*pp[i+2][1];
           spp[i][2] += wc[4][0]*pp[i+2][2];
@@ -755,7 +755,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
   int         ashift, bshift, a, b;
   int         i, j, result, err, ti;
   static int  sql=0;
-  double      tmp_fix[4], sig_ta, sig_tb, prec, rerr, urange, lrange;
+  double      tmp_fix[4], sig_ta, sig_tb, prec, rerr=0., urange, lrange;
   FILE        *ref, *tab=NULL, *cstable=NULL;
   static char seq[MAXLENGTH];
   char        *format=NULL, ss[MAXLENGTH], css[MAXLENGTH], str[MAXLENGTH];
@@ -769,7 +769,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
   double      vec3p[3], vec4p[4], vec5p[5], vec6p[6], tmp6[6];
   double      mat3[3][3], mat4[4][4], mat5[5][5], mat6[6][6];
   double      imat3[3][3], imat4[4][4], imat5[5][5], imat6[6][6];
-  double      norm, vhMvh, vbMvb, vcMvc, vpMvp;
+  double      norm, vhMvh=0., vbMvb=0., vcMvc=0., vpMvp=0.;
 #ifndef LIB
   int         mtot, *star, *nseq;
   double      sig_a[21][6], sig_b[21][6], sig_c[21][6], sig_p[21][6];
@@ -1132,7 +1132,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
         case 3: 
           for(ashift=0;ashift<star[i];ashift++) {
             for(bshift=0;bshift<star[i];bshift++) {
-              fprintf(stdout, "%9.6lf ", mat3[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", mat3[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
@@ -1140,7 +1140,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
         case 4: 
           for(ashift=0;ashift<star[i];ashift++) {
             for(bshift=0;bshift<star[i];bshift++) {
-              fprintf(stdout, "%9.6lf ", mat4[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", mat4[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
@@ -1148,7 +1148,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
         case 5: 
           for(ashift=0;ashift<star[i];ashift++) {
             for(bshift=0;bshift<star[i];bshift++) {
-              fprintf(stdout, "%9.6lf ", mat5[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", mat5[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
@@ -1156,7 +1156,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
         case 6: 
           for(ashift=0;ashift<star[i];ashift++) {
             for(bshift=0;bshift<star[i];bshift++) {
-              fprintf(stdout, "%9.6lf ", mat6[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", mat6[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
@@ -1181,11 +1181,11 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
           fprintf(stdout, "Inverted Matrix:\n");
           for(ashift=0;ashift<3;ashift++) {
             for(bshift=0;bshift<3;bshift++) {
-              fprintf(stdout, "%9.6lf ", imat3[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", imat3[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
-          fprintf(stdout, "vh: %lf\nvb: %lf\nvc: %lf\nvp: %lf\n", vhMvh, vbMvb, vcMvc, vpMvp);
+          fprintf(stdout, "vh: %f\nvb: %f\nvc: %f\nvp: %f\n", vhMvh, vbMvb, vcMvc, vpMvp);
         }
         break;
       case 4:
@@ -1202,13 +1202,11 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
           fprintf(stdout, "Inverted Matrix:\n");
           for(ashift=0;ashift<4;ashift++) {
             for(bshift=0;bshift<4;bshift++) {
-              fprintf(stdout, "%9.6lf ", imat4[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", imat4[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
-          for(ashift=0;ashift<4;ashift++) 
-            fprintf(stdout, "%lf %lf %lf %lf\n", vec4h[ashift], vec4b[ashift], vec4c[ashift], vec4p[ashift]); 
-          fprintf(stdout, "vh: %lf\nvb: %lf\nvc: %lf\nvp: %lf\n", vhMvh, vbMvb, vcMvc, vpMvp);
+          fprintf(stdout, "vh: %f\nvb: %f\nvc: %f\nvp: %f\n", vhMvh, vbMvb, vcMvc, vpMvp);
         }
         break;
       case 5:
@@ -1225,11 +1223,11 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
           fprintf(stdout, "Inverted Matrix:\n");
           for(ashift=0;ashift<5;ashift++) {
             for(bshift=0;bshift<5;bshift++) {
-              fprintf(stdout, "%9.6lf ", imat5[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", imat5[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
-          fprintf(stdout, "vh: %lf\nvb: %lf\nvc: %lf\nvp: %lf\n", vhMvh, vbMvb, vcMvc, vpMvp);
+          fprintf(stdout, "vh: %f\nvb: %f\nvc: %f\nvp: %f\n", vhMvh, vbMvb, vcMvc, vpMvp);
         }
         break;
       case 6:
@@ -1246,18 +1244,18 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
           fprintf(stdout, "Inverted Matrix:\n");
           for(ashift=0;ashift<6;ashift++) {
             for(bshift=0;bshift<6;bshift++) {
-              fprintf(stdout, "%9.6lf ", imat6[ashift][bshift]);
+              fprintf(stdout, "%9.6f ", imat6[ashift][bshift]);
             }
             fprintf(stdout, "\n");
           }
-          fprintf(stdout, "vh: %lf\nvb: %lf\nvc: %lf\nvp: %lf\n", vhMvh, vbMvb, vcMvc, vpMvp);
+          fprintf(stdout, "vh: %f\nvb: %f\nvc: %f\nvp: %f\n", vhMvh, vbMvb, vcMvc, vpMvp);
         }
         break;
       default: 
         break;
     }
 
-    if(star[i]>2) {
+    if(star[i]>3) {
       /* calculate the gaussians normalisation (no det))*/ 
       norm = 1./sqrt(pow(2.*M_PI,star[i])); 
       /* the following numbers say what is the most probable sec struc, in the 
@@ -1292,35 +1290,39 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
   do_averaging(pp, spp, nseq, sql, wc, star, ss);
 
   /* quality check */
-  j=0; prec=0;
-  for(i=0;i<sql;i++)
-  {
-    if(star[i]>2){
-      if(css[i]!='T'&&css[i]!='C'&&css[i]!='S'&&
-         css[i]!='P'&&css[i]!='H'&&css[i]!='I'&&
-         css[i]!='G'&&css[i]!='B'&&css[i]!='E') continue;
+  if(!shifty) {
+    j=0; prec=0;
+    for(i=0;i<sql;i++)
+    {
+      if(star[i]>3){
+        if(css[i]!='T'&&css[i]!='C'&&css[i]!='S'&&
+           css[i]!='P'&&css[i]!='H'&&css[i]!='I'&&
+           css[i]!='G'&&css[i]!='B'&&css[i]!='E') continue;
 
-      if(css[i]=='T'||css[i]=='S') css[i]='C';
-      if(css[i]!=ss[i]) prec++;
+        if(css[i]=='T'||css[i]=='S') css[i]='C';
+        if(css[i]!=ss[i]) prec++;
    
-      if(ss[i]=='C'&&css[i]=='P'&&spp[i][0]<spp[i][3]&&spp[i][1]<spp[i][3]) prec-=0.75;
-      if(ss[i]=='H'&&css[i]=='I') prec--;
-      if(ss[i]=='H'&&css[i]=='G') prec--;
-      if(ss[i]=='C'&&css[i]=='G') prec-=0.50;
-      if(ss[i]=='E'&&css[i]=='B') prec-=0.50;
-      if(ss[i]=='C'&&css[i]=='B') prec--;
+        if(ss[i]=='C'&&css[i]=='P'&&spp[i][0]<spp[i][3]&&spp[i][1]<spp[i][3]) prec-=0.75;
+        if(ss[i]=='H'&&css[i]=='I') prec--;
+        if(ss[i]=='H'&&css[i]=='G') prec--;
+        if(ss[i]=='C'&&css[i]=='G') prec-=0.50;
+        if(ss[i]=='E'&&css[i]=='B') prec-=0.50;
+        if(ss[i]=='C'&&css[i]=='B') prec--;
 
-      j++;
+        j++;
+      }
     }
-  }
 
-  rerr = prec/(double)j*100.; 
+    rerr = prec/(double)j*100.; 
+  }
 
 #ifndef LIB
   fprintf(stderr,"SQ:%s\n", seq);
-  fprintf(stderr,"SS:%s\n", ss); 
-  fprintf(stderr,"SS:%s\n", css);
-  fprintf(stdout,"Err %7.3f\n", rerr); fflush(stdout);
+  fprintf(stderr,"SS:%s\n", ss);
+  if(!shifty) {  
+    fprintf(stderr,"SS:%s\n", css);
+    fprintf(stdout,"Err %7.3f\n", rerr); 
+  }
 
   /* Calculating total populations */
   mhelix = mbeta = mcoil = mppii = 0.;
@@ -1342,7 +1344,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
 
   /* Writing the output file */
   pred = fopen(n7, "w");
-  fprintf(pred,"#d2D - v. 2.0.0\n#(c) Carlo Camilloni\n#PLEASE CITE:\n");
+  fprintf(pred,"#d2D - v. 2.1.0\n#(c) Carlo Camilloni\n#PLEASE CITE:\n");
   fprintf(pred,"#Camilloni C., De Simone A., Vranken W., and Vendruscolo M.\n");
   fprintf(pred,"#Determination of Secondary Structure Populations in Disordered States of Proteins using NMR Chemical Shifts\n");
   fprintf(pred,"#Biochemistry 2012, 51: 2224-2231\n\n");
@@ -1360,9 +1362,9 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
   fprintf(pred,"#num \t res \t      Helix      Beta       Coil       PPII  SS \n");
   for(i=0;i<sql;i++)
   {
-    if((pp[i][0]!=0||pp[i][1]!=0||pp[i][2]!=0)&&star[i]>2) {
-      fprintf(pred, "%i \t %c \t %10.3f %10.3f %10.3f %10.3f %c\n", i+firstres, seq[i], spp[i][0], spp[i][1], spp[i][2], spp[i][3], ss[i]);
-    } else if(star[i]<3&&ss[i]!=' ') {
+    if((pp[i][0]!=0||pp[i][1]!=0||pp[i][2]!=0)&&star[i]>3) {
+      fprintf(pred, "%i \t %c \t %10.6f %10.6f %10.6f %10.6f %c\n", i+firstres, seq[i], spp[i][0], spp[i][1], spp[i][2], spp[i][3], ss[i]);
+    } else if(star[i]<4&&ss[i]!=' ') {
       fprintf(pred, "%i \t %c \t %10.3f %10.3f %10.3f %10.3f %c*\n", i+firstres, seq[i], spp[i][0], spp[i][1], spp[i][2], spp[i][3], ss[i]);
     } else {
       if(!dbformat) fprintf(pred, "#%i \t %c \t \n", i+firstres, seq[i]);
@@ -1370,7 +1372,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
     }
   }
   fprintf(pred,"#DONE!\n");
-  fprintf(pred,"#d2D - v. 2.0.0\n#(c) Carlo Camilloni\n#PLEASE CITE:\n");
+  fprintf(pred,"#d2D - v. 2.1.0\n#(c) Carlo Camilloni\n#PLEASE CITE:\n");
   fprintf(pred,"#Camilloni C., De Simone A., Vranken W., and Vendruscolo M.\n");
   fprintf(pred,"#Determination of Secondary Structure Populations in Disordered States of Proteins using NMR Chemical Shifts\n");
   fprintf(pred,"#Biochemistry 2012, 51: 2224-2231\n");
@@ -1413,7 +1415,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
 #ifndef LIB
 void help()
 {
-  fprintf(stderr,"\nd2D - v. 2.0.0\n(c) Carlo Camilloni\n\nPLEASE CITE:\n");
+  fprintf(stderr,"\nd2D - v. 2.1.0\n(c) Carlo Camilloni\n\nPLEASE CITE:\n");
   fprintf(stderr,"Camilloni C., De Simone A., Vranken W., and Vendruscolo M.\n");
   fprintf(stderr,"Determination of Secondary Structure Populations in Disordered States of Proteins\n");
   fprintf(stderr,"using NMR Chemical Shifts\n");
@@ -1425,6 +1427,7 @@ void help()
   fprintf(stderr,"\t-shifty    \t(input file in the shifty format (website format))\n");
   fprintf(stderr,"\t-debug     \t(more verbose)\n");
   fprintf(stderr,"\t-help      \t(here we are!)\n\n");
+  fprintf(stderr,"Use single letter aminoacid format, C for reduced cysteine X for oxydaised\n\n");
   fprintf(stderr,"EXAMPLE: (shifty format)\n");
   fprintf(stderr,"#NUM	AA	HA	CA	CB	CO	N	HN   \n");
   fprintf(stderr,"1	P	4.32	62.69	32.89	0	0	0    \n");
