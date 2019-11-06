@@ -21,8 +21,8 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
   {
     if(pp[i][0]!=0.||pp[i][1]!=0.||pp[i][2]!=0.) 
     {
-      if(star[i]<4) {
-        if(((i>0)&&(i<sql-1))&&star[i-1]>2&&star[i+1]>3&&
+      if(star[i]<3) {
+        if(((i>0)&&(i<sql-1))&&star[i-1]>2&&star[i+1]>2&&
            (pp[i-1][0]!=0.||pp[i-1][1]!=0.||pp[i-1][2]!=0.)&&
            (pp[i+1][0]!=0.||pp[i+1][1]!=0.||pp[i+1][2]!=0.)){
           spp[i][0] = (pp[i+1][0]+pp[i-1][0])/2.;
@@ -45,7 +45,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
         spp[i][3] = pp[i][3];
         dcount=1.0;
 
-        if(i>2) if(nseq[i-1]!=Z&&nseq[i-2]!=Z&&(pp[i-2][0]!=0.||pp[i-2][1]!=0.||pp[i-2][2]!=0.)&&star[i-2]>3) {
+        if(i>2) if(nseq[i-1]!=Z&&nseq[i-2]!=Z&&(pp[i-2][0]!=0.||pp[i-2][1]!=0.||pp[i-2][2]!=0.)&&star[i-2]>2) {
           spp[i][0] += wc[4][0]*pp[i-2][0];
           spp[i][1] += wc[4][0]*pp[i-2][1];
           spp[i][2] += wc[4][0]*pp[i-2][2];
@@ -53,7 +53,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
           dcount+=wc[4][0];
         }
 
-        if(i>1) if(nseq[i-1]!=Z&&(pp[i-1][0]!=0.||pp[i-1][1]!=0.||pp[i-1][2]!=0.)&&star[i-1]>3) {
+        if(i>1) if(nseq[i-1]!=Z&&(pp[i-1][0]!=0.||pp[i-1][1]!=0.||pp[i-1][2]!=0.)&&star[i-1]>2) {
           spp[i][0] += wc[4][1]*pp[i-1][0];
           spp[i][1] += wc[4][1]*pp[i-1][1];
           spp[i][2] += wc[4][1]*pp[i-1][2];
@@ -61,7 +61,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
           dcount+=wc[4][1];
         }
 
-        if(i<sql-2) if(nseq[i+1]!=Z&&(pp[i+1][0]!=0.||pp[i+1][1]!=0.||pp[i+1][2]!=0.)&&star[i+1]>3) {
+        if(i<sql-2) if(nseq[i+1]!=Z&&(pp[i+1][0]!=0.||pp[i+1][1]!=0.||pp[i+1][2]!=0.)&&star[i+1]>2) {
           spp[i][0] += wc[4][1]*pp[i+1][0];
           spp[i][1] += wc[4][1]*pp[i+1][1];
           spp[i][2] += wc[4][1]*pp[i+1][2];
@@ -69,7 +69,7 @@ void do_averaging(double *pp[], double *spp[], int *nseq, int sql, double wc[5][
           dcount+=wc[4][1];
         }
 
-        if(i<sql-3) if(nseq[i+1]!=Z&&nseq[i+2]!=Z&&(pp[i+2][0]!=0.||pp[i+2][1]!=0.||pp[i+2][2]!=0.)&&star[i+2]>3) {
+        if(i<sql-3) if(nseq[i+1]!=Z&&nseq[i+2]!=Z&&(pp[i+2][0]!=0.||pp[i+2][1]!=0.||pp[i+2][2]!=0.)&&star[i+2]>2) {
           spp[i][0] += wc[4][0]*pp[i+2][0];
           spp[i][1] += wc[4][0]*pp[i+2][1];
           spp[i][2] += wc[4][0]*pp[i+2][2];
@@ -1255,7 +1255,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
         break;
     }
 
-    if(star[i]>3) {
+    if(star[i]>2) {
       /* calculate the gaussians normalisation (no det))*/ 
       norm = 1./sqrt(pow(2.*M_PI,star[i])); 
       /* the following numbers say what is the most probable sec struc, in the 
@@ -1294,7 +1294,7 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
     j=0; prec=0;
     for(i=0;i<sql;i++)
     {
-      if(star[i]>3){
+      if(star[i]>2){
         if(css[i]!='T'&&css[i]!='C'&&css[i]!='S'&&
            css[i]!='P'&&css[i]!='H'&&css[i]!='I'&&
            css[i]!='G'&&css[i]!='B'&&css[i]!='E') continue;
@@ -1362,9 +1362,9 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
   fprintf(pred,"#num \t res \t      Helix      Beta       Coil       PPII  SS \n");
   for(i=0;i<sql;i++)
   {
-    if((pp[i][0]!=0||pp[i][1]!=0||pp[i][2]!=0)&&star[i]>3) {
+    if((pp[i][0]!=0||pp[i][1]!=0||pp[i][2]!=0)&&star[i]>2) {
       fprintf(pred, "%i \t %c \t %10.6f %10.6f %10.6f %10.6f %c\n", i+firstres, seq[i], spp[i][0], spp[i][1], spp[i][2], spp[i][3], ss[i]);
-    } else if(star[i]<4&&ss[i]!=' ') {
+    } else if(star[i]<3&&ss[i]!=' ') {
       fprintf(pred, "%i \t %c \t %10.3f %10.3f %10.3f %10.3f %c*\n", i+firstres, seq[i], spp[i][0], spp[i][1], spp[i][2], spp[i][3], ss[i]);
     } else {
       if(!dbformat) fprintf(pred, "#%i \t %c \t \n", i+firstres, seq[i]);
