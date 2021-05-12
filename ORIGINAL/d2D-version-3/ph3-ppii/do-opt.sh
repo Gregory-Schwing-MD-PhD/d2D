@@ -1,0 +1,6 @@
+paste ../ppii-db/cs-ca-medi.dat cs-ca-medi.dat | awk '{if($1!="D"&&$1!="E"&&$1!="H") {printf("%c %7.3lf %7.3lf\n", $1, $2, $3);} else {printf("%c %7.3lf %7.3lf \n", $1, $5, $6)}}' > tmp; mv tmp cs-ca-medi.dat
+paste ../ppii-db/cs-cb-medi.dat cs-cb-medi.dat | awk '{if($1!="D"&&$1!="E"&&$1!="H") {printf("%c %7.3lf %7.3lf\n", $1, $2, $3);} else {printf("%c %7.3lf %7.3lf \n", $1, $5, $6)}}' > tmp; mv tmp cs-cb-medi.dat
+paste ../ppii-db/cs-co-medi.dat cs-co-medi.dat | awk '{if($1!="D"&&$1!="E"&&$1!="H") {printf("%c %7.3lf %7.3lf\n", $1, $2, $3);} else {printf("%c %7.3lf %7.3lf \n", $1, $5, $6)}}' > tmp; mv tmp cs-co-medi.dat
+paste ../ppii-db/cs-ha-medi.dat cs-ha-medi.dat | awk '{if($1!="D"&&$1!="E"&&$1!="H") {printf("%c %7.3lf %7.3lf\n", $1, $2, $3);} else {printf("%c %7.3lf %7.3lf \n", $1, $5, $6)}}' > tmp; mv tmp cs-ha-medi.dat
+paste ../ppii-db/cs-hn-medi.dat cs-hn-medi.dat | awk '{if($1!="D"&&$1!="E"&&$1!="H") {printf("%c %7.3lf %7.3lf\n", $1, $2, $3);} else {printf("%c %7.3lf %7.3lf \n", $1, $5, $6)}}' > tmp; mv tmp cs-hn-medi.dat
+paste ../ppii-db/cs-n-medi.dat cs-n-medi.dat | awk '{if($1!="D"&&$1!="E"&&$1!="H") {printf("%c %7.3lf %7.3lf\n", $1, $2, $3);} else {printf("%c %7.3lf %7.3lf \n", $1, $5, $6)}}' > tmp; mv tmp cs-n-medi.dat

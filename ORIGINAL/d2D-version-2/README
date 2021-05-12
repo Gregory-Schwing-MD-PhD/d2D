@@ -1,0 +1,14 @@
+INSTALL
+
+Prerequisites: a standard C compiler
+enter in src/ folder and type make install
+the d2D-v2.x executable will be copied
+in the bin/ folder
+
+## PLEASE CHECK THAT THE d2D INSTALLATION DIRECTORY IS DEFINED IN NEXT LINE!!!
+## and add the next to lines into your terminal configuration file (.bashrc or .profile or ....)
+
+export CAMDBV2=/Users/carlo/Codes/d2D
+export PATH=$PATH:$CAMDBV2/bin
+
+d2D-v2.x -h will show an help screen

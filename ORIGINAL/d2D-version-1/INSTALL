@@ -1,0 +1,5 @@
+in src/ run
+make install
+the executable will be bin/
+set the variable CAMDBPATH before running it:
+export CAMDBPATH="/Users/carlo/Projects/d2D-predictor/d2D-version-1"
