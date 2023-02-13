@@ -1,0 +1,36 @@
+#d2D - v. 2.1.0
+#(c) Carlo Camilloni
+#PLEASE CITE:
+#Camilloni C., De Simone A., Vranken W., and Vendruscolo M.
+#Determination of Secondary Structure Populations in Disordered States of Proteins using NMR Chemical Shifts
+#Biochemistry 2012, 51: 2224-2231
+
+#Executed as: ../src/d2D+.x -file test.txt -shifty 
+
+#SQ:PNFSGNEKI
+#SS: CCCEEEE 
+
+#Total Populations:
+#Helix(H):  3.5%
+#Extended-Beta(E): 60.6%
+#Polyproline II (PPII)(P):  3.1%
+#Coil(C): 32.8%
+
+#Populations per residue (residues marked with a * are less reliable):
+#num 	 res 	      Helix      Beta       Coil       PPII  SS 
+#1 	 P 	 
+2 	 N 	   0.055597   0.142463   0.711731   0.090209 C
+3 	 F 	   0.072522   0.237539   0.633603   0.056336 C
+4 	 S 	   0.067653   0.395728   0.503691   0.032928 C
+5 	 G 	   0.040046   0.662690   0.280971   0.016293 E
+6 	 N 	   0.012151   0.856327   0.118863   0.012659 E
+7 	 E 	   0.000000   0.963762   0.028832   0.007406 E
+8 	 K 	   0.000000   0.980676   0.015463   0.003860 E
+#9 	 I 	 
+#DONE!
+#d2D - v. 2.1.0
+#(c) Carlo Camilloni
+#PLEASE CITE:
+#Camilloni C., De Simone A., Vranken W., and Vendruscolo M.
+#Determination of Secondary Structure Populations in Disordered States of Proteins using NMR Chemical Shifts
+#Biochemistry 2012, 51: 2224-2231
