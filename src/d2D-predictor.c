@@ -1481,7 +1481,7 @@ int main(int argc, char *argv[])
     if(!strcmp(argv[i],"-help")) {help(); return 0;}
   }
 
-  if(debug) {fprintf(stdout, "In main: CAMDBPATH is %s\n", dbpath); fflush(stdout);}
+  if(debug) {fprintf(stdout, "In main: CAMDBV3 is %s\n", dbpath); fflush(stdout);}
   if(j==-1) {help(); return 0;}
 
     
