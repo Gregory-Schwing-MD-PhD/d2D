@@ -1397,12 +1397,12 @@ double do_predict(char *bmrb, int ph, char *dbpath, char *out, int firstres, cha
       free(ppiics[i]);
     }
     free(ecs);
-    free(intp);
     for(i=0;i<MAXLENGTH;i++) {
       free(intp[i]);
       free(pp[i]);
       free(spp[i]);
     }
+    free(intp);
     free(pp);
     free(spp); 
 #ifdef LIB
