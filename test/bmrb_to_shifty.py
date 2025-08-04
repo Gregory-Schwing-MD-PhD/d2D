@@ -87,6 +87,8 @@ def main():
         shifty_df = convert_to_shifty_format(df)
         shifty_df.to_csv(output_file, index=False, sep="\t")
         print(f"✅ Shifty format data exported to: {output_file}")
+        shifty_df.to_pickle(output_file+".pkl")
+        print(f"✅ Data frame exported to: {output_file}.pkl")
     except Exception as e:
         print(f"❌ Error: {e}")
         sys.exit(1)
