@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
     pymol
 
 # Clone and build d2D
-RUN git clone https://github.com/Gregory-Schwing-MD-PhD/d2D.git
+RUN git clone https://github.com/Gregory-Schwing-MD-PhD/d2D.git /opt/d2D
 
 WORKDIR /opt/d2D/src
 RUN make
