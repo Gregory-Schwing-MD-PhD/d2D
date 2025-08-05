@@ -1,0 +1,49 @@
+# Use official Python 3.10 slim image as base
+FROM python:3.10-slim
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libglib2.0-0 \
+    libxrender1 \
+    libsm6 \
+    libxext6 \
+    git \
+    wget \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip and install Python dependencies
+RUN pip install --upgrade pip && \
+    pip install \
+        numpy>=2.0.0 \
+        pandas \
+        pynmrstar \
+        biopython \
+        matplotlib \
+        MDAnalysis \
+        prody
+
+RUN apt-get update && apt-get install -y \
+    pymol
+
+# Clone and build d2D
+RUN git clone https://github.com/Gregory-Schwing-MD-PhD/d2D.git
+
+WORKDIR /opt/d2D/src
+RUN make
+
+# Set env var for d2D to work
+ENV CAMDBV3=/opt/d2D
+
+# Set default workdir to /opt
+WORKDIR /opt
+
+# Optional: copy your scripts into the container
+# (if you have them locally, you can mount instead when running)
+
+# CMD can be overridden during container run
+CMD ["/bin/bash"]
